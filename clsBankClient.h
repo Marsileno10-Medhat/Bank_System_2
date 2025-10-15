@@ -20,14 +20,14 @@ private:
 
     static clsBankClient _ConvertLineToClientObject(string Line, string Seperator = "#//#") {
         vector<string> vClientData = clsString::Split(Line, Seperator);
-        return clsBankClient(vClientData[0], vClientData[1], vClientData[2], vClientData[3], vClientData[4], vClientData[5], stod(vClientData[6]));  
+        return clsBankClient(enMode::UpdateMode, vClientData[0], vClientData[1], vClientData[2], vClientData[3], vClientData[4], vClientData[5], stod(vClientData[6]));  
     }
 
     static clsBankClient _GetEmptyClientData() {
-        return clsBankClient("", "", "", "", "", "", 0);
+        return clsBankClient(enMode::EmptyMode, "", "", "", "", "", "", 0);
     }
 
-    bool IsEmpty() {
+    bool _IsEmpty() {
         return (_Mode == enMode::EmptyMode);
     }
 
@@ -80,7 +80,8 @@ private:
     }
 
 public:
-    clsBankClient(string FirstName, string LastName, string Email, string Phone, string AccountNumber, string PINcode, double AccountBalance) : clsPerson(FirstName, LastName, Email, Phone) {
+    clsBankClient(enMode Mode, string FirstName, string LastName, string Email, string Phone, string AccountNumber, string PINcode, double AccountBalance) : clsPerson(FirstName, LastName, Email, Phone) {
+        _Mode = Mode;
         _AccountNumber = AccountNumber;
         _PINcode = PINcode;
         _AccountBalance = AccountBalance;
@@ -143,12 +144,11 @@ public:
             case enMode::EmptyMode:
                 return enSaveResults::svFailedEmptyObject;
         }
-
     }
 
     static bool IsClientExist(string AccountNumber) {
         clsBankClient Client = clsBankClient::Find(AccountNumber);
-        return (!Client.IsEmpty());
+        return (!Client._IsEmpty());
     }
 
 
