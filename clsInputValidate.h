@@ -12,6 +12,13 @@ public:
 
     // Method 1
 
+    static string ReadString(string Message) {
+        string Text = "";
+        cout << Message;
+        getline(cin >> ws, Text);
+        return Text;
+    }
+
     // Validate if the number is in range wether it's int or double.
     template <typename T>
     static bool IsNumberInRange(T From, T To, T Number) {
@@ -40,14 +47,6 @@ public:
         }
         return true;
     }
-
-    // template <typename T>
-    // static bool IsValidInputNumber(T& Number, string ErrorMessage) {
-    //      (!IsValidNumber()) {
-    //         Number = ReadNumber<T>(ErrorMessage);
-    //     }
-    //     return true;
-    // }
 
     template <typename T>
     static T ReadValidNumber(string RequestMessage, string ErrorMessage) {
