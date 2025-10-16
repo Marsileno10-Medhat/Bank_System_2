@@ -11,7 +11,7 @@ using namespace std;
 
 class clsBankClient : public clsPerson {
 private:
-    enum enMode {EmptyMode = 0, UpdateMode = 1};
+    enum enMode {EmptyMode = 0, UpdateMode = 1, AddMode = 2};
     enMode _Mode;
 
     string _AccountNumber;
@@ -69,14 +69,26 @@ private:
     }
 
     void _Update() {
-        vector<clsBankClient> ClientsData;
-        ClientsData = _LoadClientDataFromFile();
-        for (clsBankClient& C : ClientsData) {
+        vector<clsBankClient> vClientsData = _LoadClientDataFromFile();
+        for (clsBankClient& C : vClientsData) {
             if (C.GetAccountNumber() == _AccountNumber) {
                 C = *this;
                 break;
             }
         }
+        _SaveClientsDataToFile(vClientsData);
+    }
+
+    void _AddNew() {
+        _AddDataLineToFile(_ConvertClientObjectToLine(*this));
+    }
+
+    void _AddDataLineToFile(string ClientDataLine) {
+        fstream ClientsDataFile("Clients.txt", ios::out | ios::app);
+        if (ClientsDataFile.is_open()) {
+            ClientsDataFile << ClientDataLine << endl;
+        }
+        ClientsDataFile.close();
     }
 
 public:
@@ -108,7 +120,6 @@ public:
     }
 
     static clsBankClient Find(string AccountNumber) {
-
         fstream ClientsDataFile("Clients.txt", ios::in);
         if (ClientsDataFile.is_open()) {
             string Line = "";
@@ -135,21 +146,40 @@ public:
         return _GetEmptyClientData();
     }
 
-    enum enSaveResults {svFailedEmptyObject = 0, svSucceeded = 1};
-
-    enSaveResults Save() {
-        switch (_Mode) {
-            case enMode::UpdateMode:
-                return enSaveResults::svSucceeded;
-            case enMode::EmptyMode:
-                return enSaveResults::svFailedEmptyObject;
-        }
-    }
-
     static bool IsClientExist(string AccountNumber) {
         clsBankClient Client = clsBankClient::Find(AccountNumber);
         return (!Client._IsEmpty());
     }
 
+    static clsBankClient GetAddClientObject(string AccountNumber) {
+        return clsBankClient(enMode::AddMode, "", "", "", "", AccountNumber, "", 0);
+    }
 
+    enum enSaveResults {svFailedEmptyObject = 0, svSucceeded = 1, svFaliedAccountNumberExists = 2};
+
+    enSaveResults Save() {
+        switch (_Mode) {
+            case enMode::EmptyMode:
+                if (_IsEmpty()) {
+                    return enSaveResults::svFailedEmptyObject;
+                }
+            case enMode::UpdateMode:
+                if (_IsEmpty()) {
+                    return enSaveResults::svFailedEmptyObject;
+                }
+                else {
+                    _Update();
+                    return enSaveResults::svSucceeded;
+                }
+                return enSaveResults::svSucceeded;
+            case enMode::AddMode:
+                if (clsBankClient::IsClientExist(_AccountNumber)) {
+                    return enSaveResults::svFaliedAccountNumberExists;
+                }
+                else {
+                    _AddNew();
+                    return enSaveResults::svSucceeded;
+                }
+        }
+    }
 };
