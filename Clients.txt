@@ -9,3 +9,5 @@ Gandi#//#Omran#//#Ghandi@gmail.com#//#1234#//#A108#//#1234#//#7000.000000
 Hamed#//#Abbas#//#H@Gmail.com#//#8838#//#A109#//#1234#//#5000.000000
 Hilal#//#Mazin#//#A@A.com#//#123443#//#A110#//#1234#//#9000.000000
 Majida#//#Yousef#//#Majida#//#1234#//#A111#//#1234#//#717.000000
+Maro#//#Medhat#//#MaroMedhat@gmail.com#//#065456646546#//#A112#//#8520#//#10000.7
+New#//#Client1#//#newclient1@gmail.com#//#04654606465465#//#A113#//#6547#//#r
