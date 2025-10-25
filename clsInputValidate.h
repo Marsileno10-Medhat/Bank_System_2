@@ -19,6 +19,13 @@ public:
         return Text;
     }
 
+    static char ReadChar(string Message) {
+        char C = ' ';
+        cout << Message;
+        cin >> C;
+        return C;
+    }
+
     // Validate if the number is in range wether it's int or double.
     template <typename T>
     static bool IsNumberInRange(T From, T To, T Number) {
