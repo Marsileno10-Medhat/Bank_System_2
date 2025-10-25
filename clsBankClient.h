@@ -14,6 +14,7 @@ private:
     enum enMode {EmptyMode = 0, UpdateMode = 1, AddMode = 2};
     enMode _Mode;
 
+    bool _MarkedForDelete = false;
     string _AccountNumber;
     string _PINcode;
     double _AccountBalance;
@@ -38,17 +39,19 @@ private:
         DataLine += Client.GetPhone() + Seperator;
         DataLine += Client.GetAccountNumber() + Seperator;
         DataLine += Client.GetPINcode() + Seperator;
-        DataLine += Client.GetAccountBalance();
+        DataLine += to_string(Client.GetAccountBalance());
         return DataLine;
     }
 
     static void _SaveClientsDataToFile(vector<clsBankClient> vClients, string Seperator = "#//#") {
         fstream ClientsDataFile("Clients.txt", ios::out);
-        string DataLine;
         if (ClientsDataFile.is_open()) {
-            for (clsBankClient C : vClients) {
-                DataLine = _ConvertClientObjectToLine(C);
-                ClientsDataFile << DataLine << endl;
+            string DataLine;
+            for (clsBankClient& C : vClients) {
+                if (C._MarkedForDelete == false) {
+                    DataLine = _ConvertClientObjectToLine(C);
+                    ClientsDataFile << DataLine << endl;
+                }
             }
             ClientsDataFile.close();
         }
@@ -56,7 +59,7 @@ private:
 
     static vector<clsBankClient> _LoadClientDataFromFile() {
         vector<clsBankClient> vClient;
-        fstream ClientsDataFile ("Clients.txt", ios::out);
+        fstream ClientsDataFile ("Clients.txt", ios::in);
         if (ClientsDataFile.is_open()) {
             string DataLine = "";
             while (getline(ClientsDataFile, DataLine)) {
@@ -97,6 +100,10 @@ public:
         _AccountNumber = AccountNumber;
         _PINcode = PINcode;
         _AccountBalance = AccountBalance;
+    }
+
+    bool GetMarkForDelete() {
+        return _MarkedForDelete;
     }
 
     string GetAccountNumber() {
@@ -153,6 +160,27 @@ public:
 
     static clsBankClient GetAddClientObject(string AccountNumber) {
         return clsBankClient(enMode::AddMode, "", "", "", "", AccountNumber, "", 0);
+    }
+
+    bool Delete() {
+        vector<clsBankClient> vClients = _LoadClientDataFromFile();
+        
+        for (clsBankClient& C : vClients) {
+            if (C.GetAccountNumber() == _AccountNumber) {
+
+                // Note: Even though _MarkedForDelete is a private member, 
+                // it can still be accessed here because this code is inside 
+                // the clsBankClient class itself. 
+                // In C++, any object of the same class can access private members 
+                // of other objects of that same class.
+
+                C._MarkedForDelete = true;
+                break;
+            }
+        }
+        _SaveClientsDataToFile(vClients);
+        *this = _GetEmptyClientData();
+        return true;
     }
 
     enum enSaveResults {svFailedEmptyObject = 0, svSucceeded = 1, svFaliedAccountNumberExists = 2};
