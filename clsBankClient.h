@@ -126,6 +126,10 @@ public:
         return _AccountBalance;
     }
 
+    static vector<clsBankClient> GetClientsList() {
+        return _LoadClientDataFromFile();
+    }
+
     static clsBankClient Find(string AccountNumber) {
         fstream ClientsDataFile("Clients.txt", ios::in);
         if (ClientsDataFile.is_open()) {
@@ -208,6 +212,8 @@ public:
                     _AddNew();
                     return enSaveResults::svSucceeded;
                 }
+            default:
+                return enSaveResults::svFailedEmptyObject;
         }
     }
 };
