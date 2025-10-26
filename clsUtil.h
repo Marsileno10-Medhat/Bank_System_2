@@ -274,4 +274,41 @@ public:
         return true;
     }
 
-};
+    static string NumberToText(int Number) {
+        if (Number == 0) {
+            return "";
+        }
+        if (Number >= 1 && Number <= 19) {
+            string arr[] = { "", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
+            return arr[Number] + " ";
+        }
+        if (Number >= 20 && Number <= 99) {
+            string arr[] = {"", "", "Twenty", "Thirty", "Fourty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+            return arr[Number / 10] + " " + clsUtil::NumberToText(Number % 10);
+        }
+        if (Number >= 100 && Number <= 199) {
+            return "One Hundred " + clsUtil::NumberToText(Number % 100); 
+        }
+        if (Number >= 200 && Number <= 999) {
+            return clsUtil::NumberToText(Number / 100) + "Hundreds " + clsUtil::NumberToText(Number % 100);
+        }
+        if (Number >= 1000 && Number <= 1999) {
+            return "One Thousand " + clsUtil::NumberToText(Number % 1000);
+        }
+        if (Number >= 2000 && Number <= 999999) {
+            return clsUtil::NumberToText(Number / 1000) + "Thousands " + clsUtil::NumberToText(Number % 1000);
+        }
+        if (Number >= 1000000 && Number <= 1999999) {
+            return "One Million " + clsUtil::NumberToText(Number % 1000000);
+        }
+        if (Number >= 2000000 && Number <= 999999999) {
+            return clsUtil::NumberToText(Number / 1000000) + "Millions " + clsUtil::NumberToText(Number % 1000000);
+        }
+        if (Number >= 1000000000 && Number <= 1999999999) {
+            return "One Billion " + clsUtil::NumberToText(Number % 1000000000);
+        }
+        else {
+            return (Number / 1000000000) + "Billions " + clsUtil::NumberToText(Number % 1000000000);
+        }
+    }
+};  
