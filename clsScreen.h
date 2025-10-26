@@ -7,11 +7,11 @@ class clsScreen {
 
 protected:
     static void _PrineScreenHeader(string Title, string SubTitle = "") {
-        cout << "________________________________________";
+        cout << "_______________________________________________________";
         cout << "\n\n\t\t" << Title;
         if (SubTitle != "") {
             cout << "\n\t\t" << SubTitle;
         }
-        cout << "\n________________________________________\n\n";
+        cout << "\n_______________________________________________________\n\n";
     }
 };
