@@ -26,9 +26,22 @@ public:
         return C;
     }
 
+    // Validate if the number.
+    static bool IsValidNumber() {
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            return false;
+        }
+        return true;
+    }
+
     // Validate if the number is in range wether it's int or double.
     template <typename T>
     static bool IsNumberInRange(T From, T To, T Number) {
+        if (!IsValidNumber()) {
+            return false;
+        }
         if (From > To) {
             clsUtil::SwapNumbers(From, To);
         }
@@ -43,16 +56,6 @@ public:
         cout << Message;
         cin >> Num;
         return Num;
-    }
-
-    // Validate if the number.
-    static bool IsValidNumber() {
-        if (cin.fail()) {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            return false;
-        }
-        return true;
     }
 
     template <typename T>
