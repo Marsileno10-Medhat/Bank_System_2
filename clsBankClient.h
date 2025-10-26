@@ -187,6 +187,16 @@ public:
         return true;
     }
 
+    static long double GetTotslBalances() {
+        vector<clsBankClient> vClients = clsBankClient::GetClientsList();
+        double Total = 0;
+
+        for (clsBankClient& Client : vClients) {
+            Total += Client.GetAccountBalance();
+        }
+        return Total;
+    }
+
     enum enSaveResults {svFailedEmptyObject = 0, svSucceeded = 1, svFaliedAccountNumberExists = 2};
 
     enSaveResults Save() {
