@@ -187,7 +187,7 @@ public:
         return true;
     }
 
-    static long double GetTotslBalances() {
+    static double GetTotslBalances() {
         vector<clsBankClient> vClients = clsBankClient::GetClientsList();
         double Total = 0;
 
