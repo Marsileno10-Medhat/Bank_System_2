@@ -5,6 +5,7 @@
 #include "clsInputValidate.h"
 #include "clsScreen.h"
 #include "clsClientListScreen.h"
+#include "clsAddNewClientScreen.h"
 using namespace std;
 
 class clsMainScreen : protected clsScreen {
@@ -13,7 +14,7 @@ private:
     enum enMainMenuOptions {eClientList = 1, eAddClient = 2, eDeleteClient = 3, eUpdatedClient = 4, eFindClient = 5, eTransactions = 6, eManageUsers = 7, eLogout = 8};
 
     static short _ReadMainMenuOption() {
-        short Choice = clsInputValidate::ReadNumberInRange(1, 8, "Choose what do you want to do? [1 to 8]? ", "Invalid input, Choose what do you want to do? [1 to 8]? ");
+        short Choice = clsInputValidate::ReadNumberInRange(1, 8, "Choose what do you want to do? [1:8]. ", "Invalid input, Choose what do you want to do? [1:8]. ");
         return Choice;
     }
 
@@ -29,7 +30,8 @@ private:
     }
     
     static void _ShowAddClientScreen() {
-        cout << "\nAdd client screen will be here soon...\n";
+        // cout << "\nAdd client screen will be here soon...\n";
+        clsAddNewClientScreen::AddNewClient();
     }
 
     static void _ShowDeleteClientScreen() {
@@ -102,6 +104,7 @@ private:
     }
 
 public:
+
     static void ShowMainMenuScreen() {
         system("cls");
         clsScreen::_PrineScreenHeader("MainScreen");
