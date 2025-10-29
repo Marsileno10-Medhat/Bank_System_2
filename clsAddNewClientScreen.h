@@ -8,16 +8,8 @@
 using namespace std;
 
 class clsAddNewClientScreen : protected clsScreen {
-private:
 
-    static void _ReadClientData(clsBankClient& Client) {
-        Client.SetFirstName(clsInputValidate::ReadString("\nEnter the first name: "));
-        Client.SetLastName(clsInputValidate::ReadString("\nEnter the last name: "));
-        Client.SetEmail(clsInputValidate::ReadString("\nEnter the email address: "));
-        Client.SetPhone(clsInputValidate::ReadString("\nEnter the phone number: "));
-        Client.SetPINcode(clsInputValidate::ReadString("\nEnter the PIN code: "));
-        Client.SetAccountBalance(clsInputValidate::ReadValidNumber<float>("\nEnter the balance: ", "/nInvalid number, Enter the balance: "));
-    }
+private:
 
     static void _PrintClientCard(clsBankClient Client) {
         cout << "\n---------------------------------------------------";
@@ -32,6 +24,14 @@ private:
         cout << "\n- PIN code         : " << Client.GetPINcode();
         cout << "\n- Account balance  : " << Client.GetAccountBalance();
         cout << "\n---------------------------------------------------";
+    }
+    static void _ReadClientData(clsBankClient& Client) {
+        Client.SetFirstName(clsInputValidate::ReadString("\nEnter the first name: "));
+        Client.SetLastName(clsInputValidate::ReadString("\nEnter the last name: "));
+        Client.SetEmail(clsInputValidate::ReadString("\nEnter the email address: "));
+        Client.SetPhone(clsInputValidate::ReadString("\nEnter the phone number: "));
+        Client.SetPINcode(clsInputValidate::ReadString("\nEnter the PIN code: "));
+        Client.SetAccountBalance(clsInputValidate::ReadValidNumber<float>("\nEnter the balance: ", "/nInvalid number, Enter the balance: "));
     }
 
 public:
