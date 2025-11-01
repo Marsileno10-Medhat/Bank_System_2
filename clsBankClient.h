@@ -197,7 +197,7 @@ public:
         return Total;
     }
 
-    enum enSaveResults {svFailedEmptyObject = 0, svSucceeded = 1, svFaliedAccountNumberExists = 2};
+    enum enSaveResults {svFailedEmptyObject = 0, svSucceeded = 1, svFailedAccountNumberExists = 2, vsFailedOperationCancelled = 3};
 
     enSaveResults Save() {
         switch (_Mode) {
@@ -216,14 +216,14 @@ public:
                 return enSaveResults::svSucceeded;
             case enMode::AddMode:
                 if (clsBankClient::IsClientExist(_AccountNumber)) {
-                    return enSaveResults::svFaliedAccountNumberExists;
+                    return enSaveResults::svFailedAccountNumberExists;
                 }
                 else {
                     _AddNew();
                     return enSaveResults::svSucceeded;
                 }
             default:
-                return enSaveResults::svFailedEmptyObject;
+                return enSaveResults::vsFailedOperationCancelled;
         }
     }
 };
