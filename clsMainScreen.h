@@ -9,6 +9,7 @@
 #include "clsDeleteClientScreen.h"
 #include "clsUpdateClientScreen.h"
 #include "clsFindClientScreen.h"
+#include "clsTransactionsScreen.h"
 using namespace std;
 
 class clsMainScreen : protected clsScreen {
@@ -22,7 +23,7 @@ private:
     }
 
     static void _BackToMainMenuScreen() {
-        cout << "\nPress any key to go back to Main Menue...\n";
+        cout << "\nPress any key to go back to Main Menu...\n";
         system("pause>0");
         ShowMainMenuScreen();
     }
@@ -53,7 +54,8 @@ private:
     }
 
     static void _ShowTransactionScreen() {
-        cout << "\nTransaction screen will be here soon...\n";
+        // cout << "\nTransaction screen will be here soon...\n";
+        clsTransactionsScreen::ShowTransactionMenuScreen();
     }
 
     static void _ShowManageUsersScreen() {
@@ -64,7 +66,7 @@ private:
         cout << "\nEnd screen will be here soon...\n";
     }
 
-    static void PerforMainMenuOption(clsMainScreen::enMainMenuOptions MainMenuChoice) {
+    static void _PerforMainMenuOption(clsMainScreen::enMainMenuOptions MainMenuChoice) {
         switch(MainMenuChoice) {
             case clsMainScreen::enMainMenuOptions::eClientList:
                 system("cls");
@@ -126,6 +128,6 @@ public:
         cout << " [7] Manage users.\n";
         cout << " [8] Logout.\n";
         cout << "========================================\n";
-        PerforMainMenuOption((clsMainScreen::enMainMenuOptions)_ReadMainMenuOption());
+        _PerforMainMenuOption((clsMainScreen::enMainMenuOptions)_ReadMainMenuOption());
     }
 };
