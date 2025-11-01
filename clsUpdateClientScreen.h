@@ -31,21 +31,31 @@ private:
         Client.SetEmail(clsInputValidate::ReadString("\nEnter the email address: "));
         Client.SetPhone(clsInputValidate::ReadString("\nEnter the phone number: "));
         Client.SetPINcode(clsInputValidate::ReadString("\nEnter the PIN code: "));
-        Client.SetAccountBalance(clsInputValidate::ReadValidNumber<float>("\nEnter the balance: ", "/nInvalid number, Enter the balance: "));
+        Client.SetAccountBalance(clsInputValidate::ReadValidNumber<float>("\nEnter the balance: ", "\nInvalid number, Enter the balance: "));
     }
     
 public:
 
-    static void UpdateClient() {
-
+static void UpdateClient() {
         clsScreen::_PrineScreenHeader("Update client data");
-        string AccountNumber = clsInputValidate::ReadString("\nEnter the account number: ");
-        while (!clsBankClient::IsClientExist(AccountNumber)) {
-            AccountNumber = clsInputValidate::ReadString("\nAccount number is not found. Enter the account number: ");
+        string AccountNumber = "";
+
+        while (true) {
+            AccountNumber = clsInputValidate::ReadString("Enter the account number or enter \"back\" to back to the main menu: ");
+            
+            if (clsUtil::IsEqualText(AccountNumber)) {
+                cout << "\nOperation has been cancelled.\n";
+                return;
+            }
+            if (clsBankClient::IsClientExist(AccountNumber)) {
+                break;
+            }
+            cout << "\nAccount number is not found. ";
         }
         clsBankClient Client = clsBankClient::Find(AccountNumber);
         _PrintClientCard(Client);
 
+        clsBankClient::enSaveResults SaveResaults = clsBankClient::enSaveResults::vsFailedOperationCancelled;
         char ConfirmModification = 'N';
         ConfirmModification = clsInputValidate::ReadChar("\n\nAre you sure you woulke to modify this client? [Y:N]. ");
 
@@ -54,17 +64,19 @@ public:
             cout << "\nUpdate the account details:\n";
             cout << "-------------------------------" << endl;
             _ReadClientData(Client);
-            clsBankClient::enSaveResults SaveResaults = Client.Save();
+            SaveResaults = Client.Save();
+        }
 
-            switch (SaveResaults) {
-                case clsBankClient::enSaveResults::svSucceeded:
-                    cout << "\nAccount data has been successfully updated.\n";
-                    _PrintClientCard(Client);
-                    break;
-                case clsBankClient::enSaveResults::svFailedEmptyObject:
-                    cout << "\nError account was not saved because it's Empty";
-                    break;
-            }
+        switch (SaveResaults) {
+        case clsBankClient::enSaveResults::svSucceeded:
+            cout << "\nAccount data has been successfully updated.\n";
+            _PrintClientCard(Client);
+            break;
+        case clsBankClient::enSaveResults::svFailedEmptyObject:
+            cout << "\nError account hasn't been saved because it's Empty";
+            break;
+            default:
+            cout << "\nAccount data hasn't been updated.\n";
         }
     }
 };

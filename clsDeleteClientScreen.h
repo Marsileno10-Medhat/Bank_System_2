@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include "clsUtil.h"
 #include "clsBankClient.h"
 #include "clsScreen.h"
 #include "clsInputValidate.h"
@@ -28,23 +29,36 @@ private:
 public:
 
     static void DeleteClient() {
-
         clsScreen::_PrineScreenHeader("Delete client");
-        string AccountNumber = clsInputValidate::ReadString("\nEnter the account number: ");
-        while (!clsBankClient::IsClientExist(AccountNumber)) {
-            AccountNumber = clsInputValidate::ReadString("\nAccount number is not found. Enter the account number: ");
+        string AccountNumber = "";
+
+        while (true) {
+            AccountNumber = clsInputValidate::ReadString("Enter the account number or enter \"back\" to back to the main menu: ");
+            if (clsUtil::IsEqualText(AccountNumber)) {
+                cout << "\nOperation has been cancelled..\n";
+                return;
+            }
+            if (clsBankClient::IsClientExist(AccountNumber)) {
+                break;
+            }
+            cout << "\nAccount number is not found. ";
         }
+
         clsBankClient Client = clsBankClient::Find(AccountNumber);
         _PrintClientCard(Client);
 
         char ConfirmDelete = clsInputValidate::ReadChar("\nAre you sure you want to delete this client y/n? ");
         if (toupper(ConfirmDelete) == 'Y') {
+
             if (Client.Delete()) {
-                cout << "\nClient Deleted Successfully.\n";
+                cout << "\nClient has been Deleted Successfully.\n";
             }
             else {
-                cout << "\nError Client Was not Deleted\n";
+                cout << "\nError Client hasn't been Deleted\n";
             }
+        }
+        else if (toupper(ConfirmDelete) == 'N') {
+            cout << "\nAccount hasn't been deleted.\n";
         }
     }
 };

@@ -31,21 +31,35 @@ private:
         Client.SetEmail(clsInputValidate::ReadString("\nEnter the email address: "));
         Client.SetPhone(clsInputValidate::ReadString("\nEnter the phone number: "));
         Client.SetPINcode(clsInputValidate::ReadString("\nEnter the PIN code: "));
-        Client.SetAccountBalance(clsInputValidate::ReadValidNumber<float>("\nEnter the balance: ", "/nInvalid number, Enter the balance: "));
+        Client.SetAccountBalance(clsInputValidate::ReadValidNumber<float>("\nEnter the balance: ", "\nInvalid number, Enter the balance: "));
     }
 
 public:
 
     static void AddNewClient() {
         clsScreen::_PrineScreenHeader("Add new client");
-        string AccountNumber = clsInputValidate::ReadString("\nEnter the new account number: ");
-        while (clsBankClient::IsClientExist(AccountNumber)) {
-            AccountNumber = clsInputValidate::ReadString("\nAccount number is used. Enter the new account number: ");
+        string AccountNumber = "";
+
+        while (true) {
+            AccountNumber = clsInputValidate::ReadString("Enter the new account number or enter \"back\" to back to the main menu: ");
+
+            if (clsUtil::IsEqualText(AccountNumber)) {
+                cout << "\nOperation has been cancelled.\n";
+                return;
+            }
+            if (!clsBankClient::IsClientExist(AccountNumber)) {
+                break;
+            }
+            cout << "\nAccount number is not found. ";
         }
         clsBankClient NewClient = clsBankClient::GetAddClientObject(AccountNumber);
         _ReadClientData(NewClient);
+        clsBankClient::enSaveResults SaveResult = clsBankClient::enSaveResults::vsFailedOperationCancelled;
 
-        clsBankClient::enSaveResults SaveResult = NewClient.Save();
+        char ConfirmAdding = clsInputValidate::ReadChar("\nAre you sure you want to add this client y/n? ");
+        if (ConfirmAdding == 'Y') {
+            SaveResult = NewClient.Save();
+        }
 
         switch(SaveResult) {
             case clsBankClient::enSaveResults::svSucceeded:
@@ -55,8 +69,10 @@ public:
             case clsBankClient::enSaveResults::svFailedEmptyObject:
                 cout << "\nFaild to save the client data because it's empty.\n";
                 break;
-            case clsBankClient::enSaveResults::svFaliedAccountNumberExists:
+            case clsBankClient::enSaveResults::svFailedAccountNumberExists:
                 cout << "\nFailed to save the client data because the account number already used.\n";
+            default:
+                cout << "\nAccount hasn't been added.\n";
         }
     }
 

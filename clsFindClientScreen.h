@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include "clsUtil.h"
 #include "clsBankClient.h"
 #include "clsScreen.h"
 #include "clsInputValidate.h"
@@ -29,13 +30,19 @@ public:
 
     static void FindClient() {
         clsScreen::_PrineScreenHeader("Find client");
-        string AccountNumber = clsInputValidate::ReadString("Enter the account number: ");  
+        string AccountNumber = clsInputValidate::ReadString("Enter the account number or enter \"back\" to back to the main menu: ");
+
+        if (clsUtil::IsEqualText(AccountNumber)) {
+            cout << "\nOperation has been cancelled.\n";
+            return;
+        }
         clsBankClient Client = clsBankClient::Find(AccountNumber);
+
         if (Client.IsClientExist(Client.GetAccountNumber())) {
             _PrintClientCard(Client);
         }
         else {
-            cout << "\nClient is not found.\n";
+            cout << "\nClient hasn't been found.\n";
         }
     }
 
