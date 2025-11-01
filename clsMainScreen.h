@@ -6,6 +6,9 @@
 #include "clsScreen.h"
 #include "clsClientListScreen.h"
 #include "clsAddNewClientScreen.h"
+#include "clsDeleteClientScreen.h"
+#include "clsUpdateClientScreen.h"
+#include "clsFindClientScreen.h"
 using namespace std;
 
 class clsMainScreen : protected clsScreen {
@@ -25,7 +28,7 @@ private:
     }
 
     static void _ShowClientListScreen() {
-        // cout << "\nClient list screen will be here soon...\n";
+        // cout << "\nClient list screen will be here soon...\n";   
         clsClientListScreen::ShowClientsList();
     }
     
@@ -35,15 +38,18 @@ private:
     }
 
     static void _ShowDeleteClientScreen() {
-        cout << "\nDelete client screen will be here soon...\n";
+        // cout << "\nDelete client screen will be here soon...\n";
+        clsDeleteClientScreen::DeleteClient();
     }
 
     static void _ShowUpdateClientScreen() {
-        cout << "\nUpdate client screen will be here soon...\n";
+        // cout << "\nUpdate client screen will be here soon...\n";
+        clsUpdateClientScreen::UpdateClient();
     }
 
     static void _ShowFindClientScreen() {
-        cout << "\nFind client screen will be here soon...\n";
+        // cout << "\nFind client screen will be here soon...\n";
+        clsFindClientScreen::FindClient();
     }
 
     static void _ShowTransactionScreen() {
