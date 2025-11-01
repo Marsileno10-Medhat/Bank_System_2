@@ -311,4 +311,28 @@ public:
             return (Number / 1000000000) + "Billions " + clsUtil::NumberToText(Number % 1000000000);
         }
     }
+
+    // convert all the letters in text to a lower cases
+    static string ConvertTextToLowerCases(string Text) {
+        string ConvertedText = "";
+        int Length = Text.length();
+        for (int i = 0; i < Length; i++) {
+            ConvertedText += tolower(Text[i]);
+        }
+        return ConvertedText;
+    }
+
+    // convert all the letters in text to a upper cases
+    static string ConvertTextToUpperCases(string Text) {
+        string ConvertedText = "";
+        int Length = Text.length();
+        for (int i = 0; i < Length; i++) {
+            ConvertedText += toupper(Text[i]);
+        }
+        return ConvertedText;
+    }
+
+    static bool IsEqualText(const string& Text, const string& Key = "back") {
+        return clsUtil::ConvertTextToLowerCases(Text) == clsUtil::ConvertTextToLowerCases(Key);
+    }
 };  
