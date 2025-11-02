@@ -4,6 +4,7 @@
 #include <iomanip>
 #include "clsScreen.h"
 #include "clsInputValidate.h"
+#include "clsDepositScreen.h"
 using namespace std;
 
 class clsTransactionsScreen : protected clsScreen {
@@ -23,7 +24,8 @@ private:
     }
 
     static void _ShowDepositScreen() {
-        cout << "\nDeposit screen will be here soon...\n";
+        // cout << "\nDeposit screen will be here soon...\n";
+        clsDepositScreen::ShowDepositScreen();
     }
 
     static void _ShowWithdrawScreen() {
