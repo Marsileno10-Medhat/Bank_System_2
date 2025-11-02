@@ -45,7 +45,15 @@ public:
         _PrintClientCard(Client);
 
         clsBankClient::enSaveResults SaveResults = clsBankClient::enSaveResults::vsFailedOperationCancelled;
-        float DepositAmount = clsInputValidate::ReadValidNumber<float>("\nEnter the deposit amount: ", "\nInvalid number, Enter the deposit amount: ");
+
+        float DepositAmount = 0;
+        while (true) {
+            DepositAmount = clsInputValidate::ReadPositiveValidNumber<float>("\nEnter the deposit amount: ", "\nInvalid number, Enter the deposit amount: ", "Invalid number. ", true);
+            if (DepositAmount == 0) {
+                cout << "\nThe transaction has been cancelled.\n";
+                return;    
+            }
+        }
         char ConfirmTransaction = clsInputValidate::ReadChar("\nAre you sure you want to perform this transaction? [Y/N]. ");
 
         if (toupper(ConfirmTransaction) == 'Y') {
