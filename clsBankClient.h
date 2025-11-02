@@ -126,16 +126,6 @@ public:
         return _AccountBalance;
     }
 
-    void Deposit(float DepositAmount) {
-        _AccountBalance += DepositAmount;
-        Save();
-    }
-
-    void Withdraw(float WithdrawAmount) {
-        _AccountBalance -= WithdrawAmount;
-        Save();
-    }
-
     static vector<clsBankClient> GetClientsList() {
         return _LoadClientDataFromFile();
     }
@@ -235,5 +225,15 @@ public:
             default:
                 return enSaveResults::vsFailedOperationCancelled;
         }
+    }
+
+    enSaveResults Deposit(float DepositAmount) {
+        _AccountBalance += DepositAmount;
+        return Save();
+    }
+
+    enSaveResults Withdraw(float WithdrawAmount) {
+        _AccountBalance -= WithdrawAmount;
+        return Save();
     }
 };
