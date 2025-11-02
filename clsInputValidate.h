@@ -77,11 +77,11 @@ public:
     }
 
     template <typename T>
-    static T ReadPositiveValidNumber(string RequestMessage, string ErrorMessage, string InternalErrorMessage) {
+    static T ReadPositiveValidNumber(string RequestMessage, string ErrorMessage, string InternalErrorMessage, bool IncludeZero = false) {
         T Num = 0;
         while (true) {
             Num = ReadValidNumber<T>(RequestMessage, ErrorMessage);
-            if (Num > 0) {
+            if ((IncludeZero && Num >= 0) || (!IncludeZero && Num > 0)) {
                 return Num;
             }
             cout << endl << InternalErrorMessage;
@@ -89,41 +89,16 @@ public:
     }
 
     template <typename T>
-    static T ReadNegativeValidNumber(string RequestMessage, string ErrorMessage, string InternalErrorMessage) {
+    static T ReadNegativeValidNumber(string RequestMessage, string ErrorMessage, string InternalErrorMessage, bool IncludeZero = false) {
         T Num = 0;
         while (true) {
             Num = ReadValidNumber<T>(RequestMessage, ErrorMessage);
-            if (Num < 0) {
+            if ((IncludeZero && Num <= 0) || (!IncludeZero && Num < 0)) {
                 return Num;
             }
             cout << endl << InternalErrorMessage;
         }
     }
-
-    template <typename T>
-    static T ReadPositiveValidNumberIncludeZero(string RequestMessage, string ErrorMessage, string InternalErrorMessage) {
-        T Num = 0;
-        while (true) {
-            Num = ReadValidNumber<T>(RequestMessage, ErrorMessage);
-            if (Num >= 0) {
-                return Num;
-            }
-            cout << endl << InternalErrorMessage;
-        }
-    }
-
-    template <typename T>
-    static T ReadNegativeValidNumberIncludeZero(string RequestMessage, string ErrorMessage, string InternalErrorMessage) {
-        T Num = 0;
-        while (true) {
-            Num = ReadValidNumber<T>(RequestMessage, ErrorMessage);
-            if (Num <= 0) {
-                return Num;
-            }
-            cout << endl << InternalErrorMessage;
-        }
-    }
-
 
 
 
