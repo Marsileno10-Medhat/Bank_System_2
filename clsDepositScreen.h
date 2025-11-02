@@ -44,15 +44,23 @@ public:
         clsBankClient Client = clsBankClient::Find(AccountNumber);
         _PrintClientCard(Client);
 
+        clsBankClient::enSaveResults SaveResults = clsBankClient::enSaveResults::vsFailedOperationCancelled;
         float DepositAmount = clsInputValidate::ReadValidNumber<float>("\nEnter the deposit amount: ", "\nInvalid number, Enter the deposit amount: ");
         char ConfirmTransaction = clsInputValidate::ReadChar("\nAre you sure you want to perform this transaction? [Y/N]. ");
 
         if (toupper(ConfirmTransaction) == 'Y') {
-            Client.Deposit(DepositAmount);
-            cout << "\nThe transactio has been done successfully.\n";
-            cout << "\nNew balance: " << Client.GetAccountBalance() << endl;
+            SaveResults = Client.Deposit(DepositAmount);
         }
-        else {
+
+        switch (SaveResults) {
+        case clsBankClient::enSaveResults::svSucceeded:
+            cout << "\nThe transaction has been done successfully.\n";
+            cout << "\nNew balance: " << Client.GetAccountBalance() << endl;
+            break;
+        case clsBankClient::enSaveResults::svFailedEmptyObject:
+            cout << "\nError account hasn't been saved because it's Empty";
+            break;
+            default:
             cout << "\nThe transaction has been cancelled.\n";
         }
     }
